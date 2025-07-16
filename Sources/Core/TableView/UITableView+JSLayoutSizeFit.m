@@ -44,17 +44,16 @@
 #pragma mark - LayoutSizeFitCache
 
 - (JSLayoutSizeFitCacheBuilder *)js_defaultFittingHeightCache {
-    JSLayoutSizeFitCacheBuilder *cache = objc_getAssociatedObject(self, _cmd);
+    JSLayoutSizeFitCacheBuilder *cache = objc_getAssociatedObject(self, @selector(js_defaultFittingHeightCache));
     if (!cache) {
         cache = [[JSLayoutSizeFitCacheBuilder alloc] init];
-        objc_setAssociatedObject(self, _cmd, cache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, @selector(js_defaultFittingHeightCache), cache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return cache;
 }
 
 - (id<JSLayoutSizeFitCache>)js_fittingHeightCache {
-    JSCoreWeakProxy *weakProxy = objc_getAssociatedObject(self, @selector(js_fittingHeightCache));
-    id<JSLayoutSizeFitCache> heightCache = weakProxy.target;
+    id<JSLayoutSizeFitCache> heightCache = objc_getAssociatedObject(self, @selector(js_fittingHeightCache));
     if (!heightCache) {
         heightCache = self.js_defaultFittingHeightCache;
     }
@@ -62,8 +61,7 @@
 }
 
 - (void)setJs_fittingHeightCache:(id<JSLayoutSizeFitCache>)js_fittingHeightCache {
-    JSCoreWeakProxy *weakProxy = [JSCoreWeakProxy proxyWithTarget:js_fittingHeightCache];
-    objc_setAssociatedObject(self, @selector(js_fittingHeightCache), weakProxy, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(js_fittingHeightCache), js_fittingHeightCache, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (BOOL)js_containsCacheKey:(id<NSCopying>)cacheKey {

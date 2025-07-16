@@ -120,9 +120,7 @@
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
         _collectionView.backgroundColor = nil;
-        if (@available(iOS 11.0, *)) {
-            _collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-        }
+        _collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         [_collectionView registerClass:JSTestCollectionViewCell.class forCellWithReuseIdentifier:NSStringFromClass(JSTestCollectionViewCell.class)];
         [_collectionView registerClass:JSTestCollectionReusableView.class forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:NSStringFromClass(JSTestCollectionReusableView.class)];
     }

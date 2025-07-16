@@ -69,10 +69,7 @@
 #pragma mark - Getter
 
 - (CGSize)js_validViewSize {
-    UIEdgeInsets contentInset = self.contentInset;
-    if (@available(iOS 11.0, *)) {
-        contentInset = self.adjustedContentInset;
-    }
+    UIEdgeInsets contentInset = self.adjustedContentInset;
     
     CGFloat width = (self.js_width ? : self.superview.js_width) ? : self.window.bounds.size.width;
     width -= JSUIEdgeInsetsGetHorizontalValue(contentInset);

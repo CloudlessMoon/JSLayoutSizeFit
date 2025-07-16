@@ -141,14 +141,8 @@
 
 - (UITableView *)tableView {
     if (!_tableView) {
-        if (@available(iOS 13.0, *)) {
-            _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
-        } else {
-            _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        }
-        if (@available(iOS 11.0, *)) {
-            _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-        }
+        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleInsetGrouped];
+        _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         _tableView.editing = YES;
         _tableView.delegate = self;
         _tableView.dataSource = self;
