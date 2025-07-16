@@ -17,7 +17,7 @@ typedef void(^JSConfigurationTableViewSection)(__kindof UITableViewHeaderFooterV
 
 @interface UITableView (JSLayoutSizeFit)
 
-@property (null_resettable, nonatomic, weak) id<JSLayoutSizeFitCache> js_fittingHeightCache;
+@property (null_resettable, nonatomic, strong) id<JSLayoutSizeFitCache> js_fittingHeightCache;
 
 - (BOOL)js_containsCacheKey:(id<NSCopying>)cacheKey;
 

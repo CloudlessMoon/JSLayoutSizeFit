@@ -15,7 +15,7 @@ typedef void(^JSConfigurationReusableView)(__kindof UICollectionReusableView *re
 
 @interface UICollectionView (JSLayoutSizeFit)
 
-@property (null_resettable, nonatomic, weak) id<JSLayoutSizeFitCache> js_fittingSizeCache;
+@property (null_resettable, nonatomic, strong) id<JSLayoutSizeFitCache> js_fittingSizeCache;
 
 - (BOOL)js_containsCacheKey:(id<NSCopying>)cacheKey;
 
