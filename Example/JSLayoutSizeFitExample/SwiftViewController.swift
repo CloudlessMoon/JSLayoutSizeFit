@@ -11,8 +11,4 @@ import JSLayoutSizeFit
 
 class SwiftViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-
 }

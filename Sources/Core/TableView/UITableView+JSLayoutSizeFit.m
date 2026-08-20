@@ -164,7 +164,7 @@
     
     CGFloat cellWidth = 0;
     CGFloat contentWidth = 0;
-    CGFloat insetValue = self.style == UITableViewStyleGrouped + 1 ? JSUIEdgeInsetsGetHorizontalValue(self.layoutMargins) : 0;
+    CGFloat insetValue = self.style == UITableViewStyleInsetGrouped ? JSUIEdgeInsetsGetHorizontalValue(self.layoutMargins) : 0;
     if ([templateView isKindOfClass:UITableViewHeaderFooterView.class]) {
         cellWidth = self.js_validViewSize.width;
         contentWidth = cellWidth - insetValue;

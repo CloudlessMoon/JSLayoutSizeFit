@@ -23,4 +23,3 @@ public extension LayoutSizeFitWrapper where Base: UIView {
     }
     
 }
-
