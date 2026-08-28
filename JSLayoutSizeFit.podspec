@@ -1,17 +1,16 @@
 
 Pod::Spec.new do |s|
   s.name                  = 'JSLayoutSizeFit'
-  s.version               = '0.6.7'
   s.summary               = 'JSLayoutSizeFit'
   s.homepage              = 'https://github.com/jiasongs/JSLayoutSizeFit'
-  s.author                = { 'jiasong' => '593908937@qq.com' }
-  s.platform              = :ios, '13.0'
-  s.swift_versions        = ['5.9']
-  s.source                = { :git => 'https://github.com/jiasongs/JSLayoutSizeFit.git', :tag => "#{s.version}" }
-  s.frameworks            = 'Foundation', 'UIKit'
-  s.static_framework      = true
   s.license               = 'MIT'
+  s.author                = { 'jiasong' => '593908937@qq.com' }
+  s.source                = { :git => 'https://github.com/jiasongs/JSLayoutSizeFit.git', :tag => "#{s.version}" }
+  s.version               = '1.0.0'
+  s.platform              = :ios, '15.0'
+  s.swift_versions        = ['5.9']
   s.requires_arc          = true
+  s.frameworks            = 'Foundation', 'UIKit'
 
   s.dependency 'JSCoreKit', '~> 1.0'
 
