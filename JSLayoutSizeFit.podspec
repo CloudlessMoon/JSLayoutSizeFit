@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   s.homepage              = "https://github.com/jiasongs/JSLayoutSizeFit"
   s.license               = "MIT"
   s.author                = { "jiasong" => "593908937@qq.com" }
-  s.source                = { :git => "https://github.com/jiasongs/JSLayoutSizeFit.git", :tag => "#{s.version}" }
+  s.source                = { :git => "https://github.com/jiasongs/JSLayoutSizeFit.git", :tag => s.version.to_s }
 
   s.dependency "JSCoreKit", "~> 2.0"
 
