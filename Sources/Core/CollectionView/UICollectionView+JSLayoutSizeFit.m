@@ -142,7 +142,7 @@
         resultSize = [self js_fittingSizeForCacheKey:key];
     } else {
         /// 制作/获取模板View
-        __kindof UICollectionReusableView *templateView = [self js_makeTemplateViewIfNecessaryWithViewClass:viewClass nibName:nil inBundle:nil];
+        __kindof UICollectionReusableView *templateView = [self js_makeTemplateViewIfNecessaryWithViewClass:viewClass];
         
         /// 准备
         [self js_prepareForTemplateView:templateView contentSize:contentSize configuration:configuration];

@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSMutableDictionary<NSString *, __kindof UIView *> *js_allTemplateViews;
 @property (nonatomic, assign, readonly) CGSize js_validViewSize;
 
-- (__kindof UIView *)js_makeTemplateViewIfNecessaryWithViewClass:(Class)viewClass nibName:(nullable NSString *)nibName inBundle:(nullable NSBundle *)bundle;
+- (__kindof UIView *)js_makeTemplateViewIfNecessaryWithViewClass:(Class)viewClass;
 - (nullable __kindof UIView *)js_templateViewForViewClass:(Class)viewClass;
 
 @end

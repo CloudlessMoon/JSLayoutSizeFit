@@ -16,7 +16,7 @@
 
 #pragma mark - 生成模板View
 
-- (__kindof UIView *)js_makeTemplateViewIfNecessaryWithViewClass:(Class)viewClass nibName:(nullable NSString *)nibName inBundle:(nullable NSBundle *)bundle {
+- (__kindof UIView *)js_makeTemplateViewIfNecessaryWithViewClass:(Class)viewClass {
     if (![viewClass isSubclassOfClass:UIView.class]) {
         NSAssert(NO, @"viewClass必须为UIView类或者其子类");
         return nil;
@@ -25,27 +25,7 @@
     __kindof UIView *templateView = [self js_templateViewForViewClass:viewClass];
     if (!templateView) {
         NSString *viewClassString = NSStringFromClass(viewClass);
-        NSArray<UIView *> *templateNibs = nil;
-        if (nibName.length > 0) {
-            UINib *nib = [UINib nibWithNibName:nibName bundle:bundle];
-            templateNibs = [nib instantiateWithOwner:nil options:nil];
-        } else {
-            NSBundle *resourceBundle = bundle ? : [NSBundle bundleForClass:viewClass];
-            NSString *nibPath = [resourceBundle pathForResource:viewClassString ofType:@"nib"];
-            if (nibPath) {
-                templateNibs = [resourceBundle loadNibNamed:viewClassString owner:nil options:nil];
-            }
-        }
-        if (templateNibs.count > 0) {
-            for (UIView *templateNib in templateNibs) {
-                if ([templateNib isKindOfClass:viewClass]) {
-                    templateView = templateNib;
-                    break;
-                }
-            }
-        } else {
-            templateView = [[viewClass alloc] initWithFrame:CGRectZero];
-        }
+        templateView = [[viewClass alloc] initWithFrame:CGRectZero];
         
         templateView.hidden = YES;
         templateView.js_fromTemplateView = YES;
