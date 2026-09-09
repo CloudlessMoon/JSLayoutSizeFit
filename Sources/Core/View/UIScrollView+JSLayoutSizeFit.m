@@ -17,33 +17,31 @@
 #pragma mark - 生成模板View
 
 - (__kindof UIView *)js_makeTemplateViewIfNecessaryWithViewClass:(Class)viewClass {
-    if (![viewClass isSubclassOfClass:UIView.class]) {
-        NSAssert(NO, @"viewClass必须为UIView类或者其子类");
-        return nil;
+    NSAssert([viewClass isSubclassOfClass:UIView.class], @"viewClass必须为UIView类或者其子类");
+    if (!viewClass) {
+        return [[UIView alloc] init];
     }
-    
     __kindof UIView *templateView = [self js_templateViewForViewClass:viewClass];
     if (!templateView) {
-        NSString *viewClassString = NSStringFromClass(viewClass);
         templateView = [[viewClass alloc] initWithFrame:CGRectZero];
-        
-        templateView.hidden = YES;
-        templateView.js_fromTemplateView = YES;
-        
-        NSAssert(templateView, @"生成失败, 需要查找原因");
-        [self.js_allTemplateViews setValue:templateView forKey:viewClassString];
+        if (templateView) {
+            templateView.hidden = YES;
+            templateView.js_fromTemplateView = YES;
+            [self.js_allTemplateViews setObject:templateView forKey:viewClass];
+        } else {
+            NSAssert(NO, @"生成失败, 需要查找原因");
+            templateView = [[UIView alloc] init];
+        }
     }
     return templateView;
 }
 
 - (nullable __kindof UIView *)js_templateViewForViewClass:(Class)viewClass {
-    if (![viewClass isSubclassOfClass:UIView.class]) {
-        NSAssert(NO, @"viewClass必须为UIView类或者其子类");
+    NSAssert([viewClass isSubclassOfClass:UIView.class], @"viewClass必须为UIView类或者其子类");
+    if (!viewClass) {
         return nil;
     }
-    
-    NSString *viewClassString = NSStringFromClass(viewClass);
-    return [self.js_allTemplateViews objectForKey:viewClassString];
+    return [self.js_allTemplateViews objectForKey:viewClass];
 }
 
 #pragma mark - Getter
@@ -60,11 +58,11 @@
     return CGSizeMake(MAX(width, 0), MAX(height, 0));
 }
 
-- (NSMutableDictionary *)js_allTemplateViews {
-    NSMutableDictionary *templateViews = objc_getAssociatedObject(self, _cmd);
+- (NSMapTable<Class, __kindof UIView *> *)js_allTemplateViews {
+    NSMapTable *templateViews = objc_getAssociatedObject(self, @selector(js_allTemplateViews));
     if (!templateViews) {
-        templateViews = [NSMutableDictionary dictionary];
-        objc_setAssociatedObject(self, _cmd, templateViews, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        templateViews = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory valueOptions:NSPointerFunctionsStrongMemory];
+        objc_setAssociatedObject(self, @selector(js_allTemplateViews), templateViews, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return templateViews;
 }

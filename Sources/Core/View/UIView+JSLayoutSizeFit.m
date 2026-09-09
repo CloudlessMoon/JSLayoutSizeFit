@@ -68,10 +68,10 @@ JSSynthesizeBOOLProperty(js_fromTemplateView, setJs_fromTemplateView)
 }
 
 - (NSMapTable<NSIndexPath *, __kindof UITableViewCell *> *)js_allRealTableViewCells {
-    NSMapTable *keyCahces = objc_getAssociatedObject(self, _cmd);
+    NSMapTable *keyCahces = objc_getAssociatedObject(self, @selector(js_allRealTableViewCells));
     if (!keyCahces) {
         keyCahces = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory valueOptions:NSPointerFunctionsWeakMemory];
-        objc_setAssociatedObject(self, _cmd, keyCahces, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        objc_setAssociatedObject(self, @selector(js_allRealTableViewCells), keyCahces, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return keyCahces;
 }
