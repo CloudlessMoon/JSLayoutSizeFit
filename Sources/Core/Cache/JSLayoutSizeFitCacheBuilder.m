@@ -6,12 +6,13 @@
 //
 
 #import "JSLayoutSizeFitCacheBuilder.h"
+#import "JSCoreKit.h"
 #import "JSLayoutSizeFitCacheDictionary.h"
 #import "UIScrollView+JSLayoutSizeFit_Private.h"
 
 @interface JSLayoutSizeFitCacheBuilder ()
 
-@property (nonatomic, strong) NSMutableDictionary<NSString *, JSLayoutSizeFitCacheDictionary *> *allSizeFitCaches;
+@property (nonatomic, strong) NSMutableDictionary<NSValue *, JSLayoutSizeFitCacheDictionary *> *allSizeFitCaches;
 
 @end
 
@@ -33,7 +34,7 @@
 }
 
 - (void)invalidateValueForCacheKey:(id<NSCopying>)cacheKey inView:(__kindof UIView *)view {
-    [self.allSizeFitCaches enumerateKeysAndObjectsUsingBlock:^(NSString *key, JSLayoutSizeFitCacheDictionary *value, BOOL *stop) {
+    [self.allSizeFitCaches enumerateKeysAndObjectsUsingBlock:^(NSValue *key, JSLayoutSizeFitCacheDictionary *value, BOOL *stop) {
         [value removeObjectForKey:cacheKey];
     }];
 }
@@ -45,28 +46,38 @@
 #pragma mark - Private
 
 - (JSLayoutSizeFitCacheDictionary *)_fittingValueCacheInView:(__kindof UIView *)view {
-    NSString *key = nil;
-    if ([view isKindOfClass:UITableView.class]) {
-        UITableView *tableView = view;
-        key = @(tableView.js_validViewSize.width).stringValue;
-    } else if ([view isKindOfClass:UICollectionView.class]) {
-        UICollectionView *collectionView = view;
-        if ([collectionView.collectionViewLayout isKindOfClass:UICollectionViewFlowLayout.class]) {
-            UICollectionViewScrollDirection scrollDirection = [(UICollectionViewFlowLayout *)collectionView.collectionViewLayout scrollDirection];
-            if (scrollDirection == UICollectionViewScrollDirectionVertical) {
-                key = @(collectionView.js_validViewSize.width).stringValue;
-            } else if (scrollDirection == UICollectionViewScrollDirectionHorizontal) {
-                key = @(collectionView.js_validViewSize.height).stringValue;
+    NSValue *key = nil;
+    /// UIScrollView
+    if ([view isKindOfClass:UIScrollView.class]) {
+        __kindof UIScrollView *scrollView = view;
+        CGSize insetContainerSize = JSCGSizeToFixed(scrollView.js_insetContainerSize, 3, JSDecimalRoundingRuleRound);
+        /// UITableView
+        if ([scrollView isKindOfClass:UITableView.class]) {
+            key = @(insetContainerSize.width);
+        }
+        /// UICollectionView
+        else if ([view isKindOfClass:UICollectionView.class]) {
+            UICollectionView *collectionView = scrollView;
+            if ([collectionView.collectionViewLayout isKindOfClass:UICollectionViewFlowLayout.class]) {
+                UICollectionViewScrollDirection scrollDirection = [(UICollectionViewFlowLayout *)collectionView.collectionViewLayout scrollDirection];
+                if (scrollDirection == UICollectionViewScrollDirectionVertical) {
+                    key = @(insetContainerSize.width);
+                } else if (scrollDirection == UICollectionViewScrollDirectionHorizontal) {
+                    key = @(insetContainerSize.height);
+                }
+            } else {
+                key = @(insetContainerSize);
             }
         }
-    } else if ([view isKindOfClass:UIScrollView.class]) {
-        UIScrollView *scrollView = view;
-        key = NSStringFromCGSize(scrollView.js_validViewSize);
+        /// Other
+        else {
+            key = @(insetContainerSize);
+        }
     }
     if (!key) {
-        key = NSStringFromCGSize(view.bounds.size);
+        CGSize boundsSize = JSCGSizeToFixed(view.bounds.size, 3, JSDecimalRoundingRuleRound);
+        key = @(boundsSize.width);
     }
-    
     JSLayoutSizeFitCacheDictionary *cache = [self.allSizeFitCaches objectForKey:key];
     if (!cache) {
         cache = [[JSLayoutSizeFitCacheDictionary alloc] init];
@@ -75,7 +86,7 @@
     return cache;
 }
 
-- (NSMutableDictionary<NSString *, JSLayoutSizeFitCacheDictionary *> *)allSizeFitCaches {
+- (NSMutableDictionary<NSValue *, JSLayoutSizeFitCacheDictionary *> *)allSizeFitCaches {
     if (!_allSizeFitCaches) {
         _allSizeFitCaches = [NSMutableDictionary dictionary];
     }

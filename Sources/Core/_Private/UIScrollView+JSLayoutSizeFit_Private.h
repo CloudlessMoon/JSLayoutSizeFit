@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface UIScrollView (JSLayoutSizeFit_Private)
 
 @property (nonatomic, strong, readonly) NSMapTable<Class, __kindof UIView *> *js_allTemplateViews;
-@property (nonatomic, assign, readonly) CGSize js_validViewSize;
+@property (nonatomic, assign, readonly) CGSize js_insetContainerSize;
 
 - (__kindof UIView *)js_makeTemplateViewIfNecessaryWithViewClass:(Class)viewClass;
 - (nullable __kindof UIView *)js_templateViewForViewClass:(Class)viewClass;

@@ -6,8 +6,8 @@
 //
 
 #import "UIScrollView+JSLayoutSizeFit.h"
-#import "UIScrollView+JSLayoutSizeFit_Private.h"
 #import "JSCoreKit.h"
+#import "UIScrollView+JSLayoutSizeFit_Private.h"
 #import "JSLayoutSizeFitCache.h"
 #import "UIView+JSLayoutSizeFit_Private.h"
 #import "UIView+JSLayoutSizeFit.h"
@@ -46,13 +46,25 @@
 
 #pragma mark - Getter
 
-- (CGSize)js_validViewSize {
+- (CGSize)js_insetContainerSize {
     UIEdgeInsets contentInset = self.adjustedContentInset;
     
-    CGFloat width = (self.js_width ? : self.superview.js_width) ? : self.window.bounds.size.width;
+    CGFloat width = self.js_width;
+    if (width <= 0) {
+        width = self.superview.js_width;
+    }
+    if (width <= 0) {
+        width = self.window.bounds.size.width;
+    }
     width -= JSUIEdgeInsetsGetHorizontalValue(contentInset);
     
-    CGFloat height = (self.js_height ? : self.superview.js_height) ? : self.window.bounds.size.height;
+    CGFloat height = self.js_height;
+    if (height <= 0) {
+        height = self.superview.js_height;
+    }
+    if (height <= 0) {
+        height = self.window.bounds.size.height;
+    }
     height -= JSUIEdgeInsetsGetVerticalValue(contentInset);
     
     return CGSizeMake(MAX(width, 0), MAX(height, 0));
