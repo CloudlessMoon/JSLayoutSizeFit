@@ -171,6 +171,11 @@
     } else if ([templateView isKindOfClass:UITableViewCell.class]) {
         UITableViewCell *realCell = indexPath ? [templateView js_realTableViewCellForIndexPath:indexPath] : nil;
         if (realCell != nil) {
+            if (templateView.js_fixedSize.width != realCell.js_width || contentView.js_fixedSize.width != realCell.contentView.js_width) {
+                [realCell layoutIfNeeded];
+                /// layoutIfNeeded消耗标记后，这里需要恢复标记，避免出现问题
+                [realCell setNeedsLayout];
+            }
             cellWidth = realCell.js_width;
             contentWidth = realCell.contentView.js_width;
         } else {
@@ -184,7 +189,7 @@
         CGFloat minimumHeight = [self js_fittingHeightForTemplateView:templateView finallyWidth:contentWidth];
         
         templateView.js_fixedSize = CGSizeMake(cellWidth, minimumHeight);
-        contentView.js_fixedSize =  CGSizeMake(contentWidth, minimumHeight);
+        contentView.js_fixedSize = CGSizeMake(contentWidth, minimumHeight);
         
         /// 强制布局, 使外部可以拿到一些控件的真实布局
         [templateView setNeedsLayout];
