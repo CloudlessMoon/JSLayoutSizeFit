@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
   s.name = "JSLayoutSizeFit"
 
-  s.version = "1.0.2"
+  s.version = "1.1.0"
   s.platforms = { :ios => "17.0" }
   s.swift_versions = ["5.9"]
   s.requires_arc = true
